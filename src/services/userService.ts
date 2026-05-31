@@ -1,27 +1,30 @@
-import { User } from "../components/users/UserForm";
+const BASE_URL = "http://localhost:5000";
 
-const BASE_URL = "https://nimble-arousal-duplex.ngrok-free.dev";
+const headers = {
+  "Content-Type": "application/json",
+  "ngrok-skip-browser-warning": "true",
+};
 
 export const userService = {
 
   getAll: async () => {
-    const res = await fetch(`${BASE_URL}/usuarios`);
+    const res = await fetch(`${BASE_URL}/usuarios`, { headers });
     return res.json();
   },
 
-  create: async (user: Omit<User, "id">) => {
+  create: async (user: any) => {
     const res = await fetch(`${BASE_URL}/usuarios`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers,
       body: JSON.stringify(user),
     });
     return res.json();
   },
 
-  update: async (id: string, user: Omit<User, "id">) => {
+  update: async (id: string, user: any) => {
     const res = await fetch(`${BASE_URL}/usuarios/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers,
       body: JSON.stringify(user),
     });
     return res.json();
@@ -30,6 +33,7 @@ export const userService = {
   delete: async (id: string) => {
     const res = await fetch(`${BASE_URL}/usuarios/${id}`, {
       method: "DELETE",
+      headers,
     });
     return res.json();
   },
