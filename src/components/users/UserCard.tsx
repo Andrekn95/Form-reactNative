@@ -17,9 +17,9 @@ export default function UserCard({
     <View className={styles.card.user}>
       <Text className={styles.text.title2}>{user.nombre}</Text>
 
-      <Text className={styles.text.subtitle}>{user.correo}</Text>
-      <Text className={styles.text.subtitle}>Tel�fono: {user.telefono}</Text>
-      <Text className={styles.text.subtitle}>Pa�s: {user.pais}</Text>
+      <Text className={styles.text.subtitle}>Correo: {user.correo}</Text>
+      <Text className={styles.text.subtitle}>Telefono: {user.telefono}</Text>
+      <Text className={styles.text.subtitle}>Pais: {user.pais}</Text>
       <Text className={styles.text.subtitle}>Nacimiento: {user.fechaNacimiento}</Text>
 
       <View className="flex-row gap-3 mt-4">

@@ -12,7 +12,7 @@ export default function UserList({ users, onEdit, onDelete }: UserListProps) {
   if (users.length === 0) {
     return (
       <View className="mt-6 p-4 rounded-2xl bg-white shadow-sm">
-        <Text className="text-slate-600">No hay usuarios registrados aún.</Text>
+        <Text className="text-slate-600">No hay usuarios registrados aun.</Text>
       </View>
     );
   }

@@ -1,11 +1,11 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, TextInput } from "react-native";
 import { useState } from "react";
 import { styles } from "../styles/styles";
 import MetricCard from "../components/users/MetricCard";
 import UserList from "../components/users/UserList";
 import EditUserModal from "../components/users/EditUserModal";
 import { User } from "../components/users/UserForm";
-import FeedbackMessage from "@/components/FeedbackMessage";
+import FeedbackMessage from "../components/FeedbackMessage";
 
 interface UsersScreenProps {
   users: User[];
@@ -17,6 +17,11 @@ export default function UsersScreen({ users, onDelete, onEdit }: UsersScreenProp
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
+
+  const filteredUsers = users.filter((u) =>
+    u.nombre.toLowerCase().includes(search.toLowerCase())
+  );
 
   const showMessage = (text: string) => {
     setMessage(text);
@@ -47,20 +52,28 @@ export default function UsersScreen({ users, onDelete, onEdit }: UsersScreenProp
 
       <Text className={styles.text.title}>Lista de Usuarios</Text>
 
-      {/* Mensaje feedback */}
-   <FeedbackMessage message={message} />
+      <FeedbackMessage message={message} />
 
       {/* Métricas */}
       <View className="flex-row gap-4 mt-6">
         <MetricCard title="Usuarios Totales" value={String(users.length)} />
         <MetricCard title="Último Usuario" value={lastUser ? lastUser.nombre : "-"} />
-        <MetricCard title="Último Registro" value={lastUser ? lastUser.fechaNacimiento : "-"} />
+      </View>
+
+      {/* Buscador */}
+      <View className="mt-6">
+        <TextInput
+          placeholder="Buscar por nombre..."
+          value={search}
+          onChangeText={setSearch}
+          className={styles.input.base}
+        />
       </View>
 
       {/* Lista */}
-      <View className="mt-6">
+      <View className="mt-4">
         <UserList
-          users={users}
+          users={filteredUsers}
           onEdit={handleEditPress}
           onDelete={handleDelete}
         />
