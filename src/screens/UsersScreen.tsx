@@ -5,6 +5,7 @@ import MetricCard from "../components/users/MetricCard";
 import UserList from "../components/users/UserList";
 import EditUserModal from "../components/users/EditUserModal";
 import { User } from "../components/users/UserForm";
+import FeedbackMessage from "@/components/FeedbackMessage";
 
 interface UsersScreenProps {
   users: User[];
@@ -15,6 +16,12 @@ interface UsersScreenProps {
 export default function UsersScreen({ users, onDelete, onEdit }: UsersScreenProps) {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+
+  const showMessage = (text: string) => {
+    setMessage(text);
+    setTimeout(() => setMessage(null), 8000);
+  };
 
   const handleEditPress = (user: User) => {
     setSelectedUser(user);
@@ -25,6 +32,12 @@ export default function UsersScreen({ users, onDelete, onEdit }: UsersScreenProp
     onEdit(user);
     setModalVisible(false);
     setSelectedUser(null);
+    showMessage("✅ Usuario actualizado exitosamente");
+  };
+
+  const handleDelete = (id: string) => {
+    onDelete(id);
+    showMessage("🗑️ Usuario eliminado exitosamente");
   };
 
   const lastUser = users[users.length - 1];
@@ -34,20 +47,14 @@ export default function UsersScreen({ users, onDelete, onEdit }: UsersScreenProp
 
       <Text className={styles.text.title}>Lista de Usuarios</Text>
 
+      {/* Mensaje feedback */}
+   <FeedbackMessage message={message} />
+
       {/* Métricas */}
       <View className="flex-row gap-4 mt-6">
-        <MetricCard
-          title="Usuarios Totales"
-          value={String(users.length)}
-        />
-        <MetricCard
-          title="Último Usuario"
-          value={lastUser ? lastUser.nombre : "-"}
-        />
-        <MetricCard
-          title="Último Registro"
-          value={lastUser ? lastUser.fechaNacimiento : "-"}
-        />
+        <MetricCard title="Usuarios Totales" value={String(users.length)} />
+        <MetricCard title="Último Usuario" value={lastUser ? lastUser.nombre : "-"} />
+        <MetricCard title="Último Registro" value={lastUser ? lastUser.fechaNacimiento : "-"} />
       </View>
 
       {/* Lista */}
@@ -55,7 +62,7 @@ export default function UsersScreen({ users, onDelete, onEdit }: UsersScreenProp
         <UserList
           users={users}
           onEdit={handleEditPress}
-          onDelete={onDelete}
+          onDelete={handleDelete}
         />
       </View>
 

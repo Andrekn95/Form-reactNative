@@ -25,7 +25,6 @@ export default function App() {
   const handleCreate = async (user: User) => {
     await userService.create(user);
     await loadUsers();
-    setCurrentView("users");
   };
 
   const handleDelete = async (id: string) => {
